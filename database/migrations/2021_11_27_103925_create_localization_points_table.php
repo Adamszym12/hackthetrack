@@ -24,7 +24,6 @@ class CreateLocalizationPointsTable extends Migration
             $table->boolean('is_start_point')->default(0);
             $table->time('open_time')->nullable();
             $table->time('close_time')->nullable();
-            $table->json('last_known_position')->nullable();
             $table->json('google_response')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

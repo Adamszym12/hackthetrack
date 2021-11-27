@@ -14,9 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::apiResource('locationPoints', \App\Http\Controllers\Api\LocalizationPoint::class);
 
-Route::apiResource('locationPoints', \App\Http\Controllers\Api\LocalizationPoint::class );
-Route::apiResource('google-location-points', \App\Http\Controllers\Api\GoogleLocalizationPoint::class );
+Route::apiResource('user', \App\Http\Controllers\Api\UserController::class);
+Route::apiResource('google-location-points', \App\Http\Controllers\Api\GoogleLocalizationPoint::class);
+Route::apiResource('google-location-points', \App\Http\Controllers\Api\GoogleLocalizationPoint::class);
