@@ -19,3 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('locationPoints', \App\Http\Controllers\Api\LocalizationPoint::class );
+Route::apiResource('google-location-points', \App\Http\Controllers\Api\GoogleLocalizationPoint::class );

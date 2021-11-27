@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class LocalizationPoint extends Model
 {
+    protected $casts = [
+        'google_response' => 'array'
+    ];
+
     use HasFactory;
 
     /**
@@ -24,6 +28,7 @@ class LocalizationPoint extends Model
         'open_time',
         'close_time',
         'is_start_point',
+        'google_response',
     ];
 
     public function scopeUser($query, $userId)
