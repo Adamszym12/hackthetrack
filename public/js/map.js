@@ -6,17 +6,24 @@ function initMap() {
         function () {
             const map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 11,
-                center: coordinates[0].coordination,
+                center: coordinates.current_location ?? coordinates.locations[0].coordination,
             });
-            $(coordinates).each(function (index) {
+            $(coordinates.locations).each(function (index) {
                 new google.maps.Marker({
-                    icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
                     position: this.coordination,
                     map,
                     title: this.name,
                 });
             });
 
+            if (coordinates.current_location) {
+                new google.maps.Marker({
+                    icon: "https://maps.google.com/mapfiles/kml/paddle/wht-stars.png",
+                    position: coordinates.current_location,
+                    map,
+                    title: this.name,
+                });
+            }
         }
     );
 
