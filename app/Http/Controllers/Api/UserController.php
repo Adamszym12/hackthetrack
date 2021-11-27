@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Kruksal\Kruskal;
+use App\Http\TravellingSalesman\TspBranchBound;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -37,37 +38,19 @@ class UserController
 //        }
 //        return response()->json($locations);
 
-
-        $kruskal = new Kruskal();
-
-
-        $count = $user->localizationPoints->count();
-        $edges = $kruskal->Factorial($count) / ($kruskal->Factorial(2) * $kruskal->Factorial($count - 2));
-        $graph = $kruskal->CreateGraph($count, $edges);
-        $counter = 0;
-
+        $tsp = TspBranchBound::getInstance();
         foreach ($user->localizationPoints as $key => $location) {
-
             $coordination = $location->google_response["results"][0]["geometry"]["location"];
-            $otherLocations = $user->localizationPoints->diff([$location]);
-
-            foreach ($otherLocations as $otherLocation) {
-                if ($counter == $edges){
-                    break;
-                }
-                $otherLocationCoordination = $otherLocation->google_response["results"][0]["geometry"]["location"];
-                $distance = sqrt(pow(($otherLocationCoordination['lat'] - $coordination['lat']), 2)+pow(($otherLocationCoordination['lng'] - $coordination['lng']), 2));
-                $graph->_edge[$counter]->Source = $location->id-1;
-                $graph->_edge[$counter]->Destination = $otherLocation->id-1;
-                $graph->_edge[$counter]->Weight = $distance;
-                $counter++;
-            }
-
+            $tsp->addLocation(array('id' => $location->id, 'latitude' => $coordination['lat'], 'longitude' => $coordination['lng']));
         }
-
-        $result = $kruskal->Kruskal($graph);
-
-        dd($result);
-        return response()->json("asd");
+        $ans = $tsp->solve();
+        foreach ($ans['path'] as $path) {
+            $locations[] =
+                [
+                    'coordination' => $user->localizationPoints[$path[0]]->google_response["results"][0]["geometry"]["location"],
+                    'name' => "{$user->localizationPoints[$path[0]]->street_number} {$user->localizationPoints[$path[0]]->street} {$user->localizationPoints[$path[0]]->city} ",
+                ];
+        }
+        return response()->json($locations);
     }
 }
