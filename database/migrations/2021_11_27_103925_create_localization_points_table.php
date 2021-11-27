@@ -20,9 +20,10 @@ class CreateLocalizationPointsTable extends Migration
             $table->string('street');
             $table->string('postal_code');
             $table->string('city');
-            $table->string('is_normalized');
-            $table->string('open_time');
-            $table->string('close_time');
+            $table->boolean('is_normalized');
+            $table->boolean('is_start_point')->default(0);
+            $table->time('open_time')->nullable();
+            $table->time('close_time')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
