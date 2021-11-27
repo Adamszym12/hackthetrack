@@ -20,15 +20,15 @@ class Kruskal
     function Find($subsets, $i)
     {
         if ($subsets[$i]->Parent != $i)
-            $subsets[$i]->Parent = Find($subsets, $subsets[$i]->Parent);
+            $subsets[$i]->Parent = $this->Find($subsets, $subsets[$i]->Parent);
 
         return $subsets[$i]->Parent;
     }
 
     function Union($subsets, $x, $y)
     {
-        $xroot = Find($subsets, $x);
-        $yroot = Find($subsets, $y);
+        $xroot = $this->Find($subsets, $x);
+        $yroot = $this->Find($subsets, $y);
 
         if ($subsets[$xroot]->Rank < $subsets[$yroot]->Rank)
             $subsets[$xroot]->Parent = $yroot;
@@ -52,6 +52,15 @@ class Kruskal
             echo $result[$i]->Source . " -- " . $result[$i]->Destination . " == " . $result[$i]->Weight . "<br/>";
     }
 
+    public function Factorial($number)
+    {
+        $factorial = 1;
+        for ($i = 1; $i <= $number; $i++) {
+            $factorial = $factorial * $i;
+        }
+        return $factorial;
+    }
+
     function Kruskal($graph)
     {
         $verticesCount = $graph->VerticesCount;
@@ -59,7 +68,7 @@ class Kruskal
         $i = 0;
         $e = 0;
 
-        usort($graph->_edge, "CompareEdges");
+        usort($graph->_edge, [$this,"CompareEdges"]);
 
         $subsets = array();
 
@@ -73,16 +82,16 @@ class Kruskal
         while ($e < $verticesCount - 1)
         {
             $nextEdge = $graph->_edge[$i++];
-            $x = Find($subsets, $nextEdge->Source);
-            $y = Find($subsets, $nextEdge->Destination);
+            $x = $this->Find($subsets, $nextEdge->Source);
+            $y = $this->Find($subsets, $nextEdge->Destination);
 
             if ($x != $y)
             {
                 $result[$e++] = $nextEdge;
-                Union($subsets, $x, $y);
+                $this->Union($subsets, $x, $y);
             }
         }
-
+        $this->PrintResult($result, $e);
         return([$result, $e]);
     }
 
