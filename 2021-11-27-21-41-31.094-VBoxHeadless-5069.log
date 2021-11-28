@@ -1,0 +1,12 @@
+Log created: 2021-11-27T21:41:31.948094000Z
+Process ID:  5069 (0x13cd)
+Parent PID:  1703 (0x6a7)
+Executable:  /usr/lib/virtualbox/VBoxHeadless
+Arg[0]: /usr/lib/virtualbox/VBoxHeadless
+Arg[1]: --comment
+Arg[2]: hackthetrack
+Arg[3]: --startvm
+Arg[4]: 347a1ef1-6080-4275-912f-d3ea7c6781f2
+Arg[5]: --vrde
+Arg[6]: config
+AddRef: illegal refcnt=3221225469 state=2

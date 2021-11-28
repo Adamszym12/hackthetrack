@@ -7,15 +7,9 @@ use Illuminate\Http\Request;
 
 class UserController
 {
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     */
     public function update(Request $request, User $user)
     {
-        $user->last_known_position = $request->json();
+        $user->last_known_position = $request->toArray();
         $user->save();
     }
 
@@ -31,7 +25,7 @@ class UserController
                 [
 
                     'coordination' => $location->google_response["results"][0]["geometry"]["location"],
-                    'name' =>"{$location->street_number} {$location->street} {$location->city} ",
+                    'name' => "{$location->street_number} {$location->street} {$location->city} ",
                 ];
         }
         $data = [
